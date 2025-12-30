@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Student List</h2>
+
+<table class="table table-bordered mt-3">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Admission Date</th>
+        <th>Course Enrolled</th>
+        <th>Action</th>
+    </tr>
+
+    {% for student in students %}
+    <tr>
+        <td>{{ student.name }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.phone }}</td>
+        <td>{{ student.admission_date }}</td>
+        <td>
+        {% for enrollment in enrollments %}
+            {% if enrollment.student.id == student.id %}
+                {{ enrollment.course.course_name }}
+            {% endif %}
+        {% endfor %}
+        </td>
+
+        <td>
+            <a href="{% url 'edit_student' student.id %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'delete_student' student.id %}" class="btn btn-sm btn-danger">Delete</a>
+
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5" class="text-center">No students found</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
